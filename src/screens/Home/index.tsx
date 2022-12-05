@@ -8,11 +8,23 @@ import { Button } from '../../components/Button';
 
 import { Container, Title, Input, Form, FormTitle } from './styles';
 
+import { database } from '../../databases';
+import { SkillModel } from '../../databases/model/skillModel';
+
 export function Home() {
   const [type, setType] = useState<MenuTypeProps>("soft");
   const [name, setName] = useState('');
 
   const bottomSheetRef = useRef<BottomSheet>(null);
+
+  async function handleSave() {
+    await database.write(async() => {
+      await database.get<SkillModel>('skills').create(data => {
+        data.name = name,
+        data.type = type
+      })
+    })
+  }
 
   return (
     <Container>
@@ -50,7 +62,7 @@ export function Home() {
 
           <Button
             title="Save"
-            onPress={() => { }}
+            onPress={handleSave}
           />
         </Form>
       </BottomSheet>
