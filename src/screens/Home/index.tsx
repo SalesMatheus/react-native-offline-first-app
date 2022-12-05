@@ -26,6 +26,11 @@ export function Home() {
     })
   }
 
+  async function fetchData() {
+    const skillCollection = database.get<SkillModel>('skills');
+    const response = await skillCollection.query().fetch();
+    console.log(response)
+  }
   return (
     <Container>
       <Title>About me</Title>
